@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-<title>GhostDrop</title>
+
+<title>GhostDrop Vault</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<h1>GhostDrop</h1>
+<h1>GhostDrop 💀</h1>
 
-<button onclick="connectWallet()">Connect Wallet</button>
+<p>Dead-man switch vault</p>
 
-<p id="wallet">Not Connected</p>
+<div class="card">
 
-<hr>
+<h2>Create Vault</h2>
 
-<h2>Secure File Drop</h2>
+<input id="vaultId" placeholder="Vault ID">
 
-<input type="file" id="fileInput" />
+<input id="cid" placeholder="Shelby CID">
 
-<button onclick="uploadFile()">
-Encrypt & Drop File
-</button>
+<input id="recipients" placeholder="Recipients">
 
-<p id="status"></p>
+<button onclick="createVault()">Create Vault</button>
 
-<script src="wallet.js"></script>
-<script src="drop.js"></script>
+</div>
+
+
+<div class="card">
+
+<h2>Daily Check-In</h2>
+
+<input id="checkinVaultId" placeholder="Vault ID">
+
+<button onclick="checkin()">Check In</button>
+
+</div>
+
+
+<script src="app.js"></script>
 
 </body>
-
 </html>
