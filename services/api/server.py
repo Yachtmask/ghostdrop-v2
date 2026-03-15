@@ -5,10 +5,26 @@ from infrastructure.database.vault_db import (
     create_vault_record,
     update_deadline
 )
-
+from infrastructure.database.vault_db import get_all_vaults
 app = Flask(__name__)
 
+@app.route("/vaults", methods=["GET"])
+def list_vaults():
 
+    vaults = get_all_vaults()
+
+    result = []
+
+    for vault in vaults:
+
+        result.append({
+            "vault_id": vault[0],
+            "cid": vault[1],
+            "deadline": vault[2],
+            "recipients": vault[3]
+        })
+
+    return jsonify(result)
 @app.route("/create_vault", methods=["POST"])
 def create_vault():
 
