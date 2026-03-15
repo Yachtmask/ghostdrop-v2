@@ -1,31 +1,53 @@
 from flask import Flask, request, jsonify
+import time
+
+from infrastructure.database.vault_db import (
+    create_vault_record,
+    update_deadline
+)
 
 app = Flask(__name__)
 
-@app.route("/wallet", methods=["POST"])
-def wallet():
+
+@app.route("/create_vault", methods=["POST"])
+def create_vault():
 
     data = request.json
-    wallet_address = data.get("address")
+
+    vault_id = data["vault_id"]
+    cid = data["cid"]
+    recipients = data["recipients"]
+
+    deadline = int(time.time()) + 86400
+
+    create_vault_record(
+        vault_id,
+        cid,
+        deadline,
+        recipients
+    )
 
     return jsonify({
-        "status": "wallet received",
-        "wallet": wallet_address
+        "status": "vault_created",
+        "deadline": deadline
     })
 
 
-@app.route("/drop", methods=["POST"])
-def drop():
+@app.route("/checkin", methods=["POST"])
+def checkin():
 
     data = request.json
-    vault = data.get("vault")
 
-    print("Vault received")
+    vault_id = data["vault_id"]
+
+    new_deadline = int(time.time()) + 86400
+
+    update_deadline(vault_id, new_deadline)
 
     return jsonify({
-        "status": "vault stored"
+        "status": "checkin_success",
+        "new_deadline": new_deadline
     })
 
 
-if __name__ == "__main__":
-    app.run(port=5000)
+app.run(port=5000)
