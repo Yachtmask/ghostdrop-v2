@@ -3,6 +3,7 @@ import json
 
 from packages.crypto.encryption import generate_vault_key, encrypt_file
 from packages.crypto.keypack import encrypt_vault_key
+from packages.shelby.shelby_client import upload_ciphertext
 
 
 def create_vault(file_bytes, recipients):
@@ -12,6 +13,7 @@ def create_vault(file_bytes, recipients):
     vault_key = generate_vault_key()
 
     encrypted_file = encrypt_file(file_bytes, vault_key)
+    cid = upload_ciphertext(encrypted_file)
 
     recipient_packages = []
 
@@ -33,6 +35,10 @@ def create_vault(file_bytes, recipients):
     }
 
     return {
+    "vault_id": vault_id,
+    "cid": cid,
+    "metadata": json.dumps(vault_metadata)
+}
         "vault_id": vault_id,
         "ciphertext": encrypted_file,
         "metadata": json.dumps(vault_metadata)
