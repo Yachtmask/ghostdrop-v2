@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <title>GhostDrop</title>
 </head>
@@ -8,15 +9,25 @@
 
 <h1>GhostDrop</h1>
 
-<button onclick="connectWallet()">
-Connect Wallet
+<button onclick="connectWallet()">Connect Wallet</button>
+
+<p id="wallet">Not Connected</p>
+
+<hr>
+
+<h2>Secure File Drop</h2>
+
+<input type="file" id="fileInput" />
+
+<button onclick="uploadFile()">
+Encrypt & Drop File
 </button>
 
-<p id="wallet">
-Not Connected
-</p>
+<p id="status"></p>
 
 <script src="wallet.js"></script>
+<script src="drop.js"></script>
 
 </body>
+
 </html>
