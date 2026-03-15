@@ -1,4 +1,4 @@
-import { generateKey, encryptData, decryptData } from "../crypto/engine.js";
+import { generateKey, encryptData } from "../crypto/engine.js";
 
 export function createVault(data) {
 
@@ -7,16 +7,12 @@ export function createVault(data) {
   const encrypted = encryptData(Buffer.from(data), key);
 
   return {
+
+    format: "GHOSTDROP_V1",
+
     vault: encrypted,
-    key: key.toString("hex")
+
+    timestamp: Date.now()
+
   };
-}
-
-export function openVault(vaultData, keyHex) {
-
-  const key = Buffer.from(keyHex, "hex");
-
-  const decrypted = decryptData(vaultData, key);
-
-  return decrypted.toString();
 }
