@@ -1,1 +1,58 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+
+<meta charset="UTF-8">
+
+<title>GhostDrop Vault</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<h1>GhostDrop 💀</h1>
+
+<p>Dead-man switch vault prototype</p>
+
+<div class="card">
+
+<h2>Create Vault</h2>
+
+<input id="vaultId" placeholder="Vault ID">
+
+<input id="cid" placeholder="Shelby CID">
+
+<input id="recipients" placeholder="Recipients">
+
+<button onclick="createVault()">Create Vault</button>
+
+</div>
+
+<div class="card">
+
+<h2>Check In</h2>
+
+<input id="checkVaultId" placeholder="Vault ID">
+
+<button onclick="checkin()">Check In</button>
+
+</div>
+
+<div class="card">
+
+<h2>Vault List</h2>
+
+<button onclick="loadVaults()">Refresh</button>
+
+<ul id="vaultList"></ul>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
