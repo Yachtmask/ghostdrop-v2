@@ -1,22 +1,11 @@
-async function encryptFile() {
+async function encryptFile(file){
 
-const fileInput = document.getElementById("fileInput")
-const status = document.getElementById("status")
-
-if (!fileInput.files.length) {
-status.innerText = "Please select a file first."
-return
-}
-
-status.innerText = "Encrypting file..."
-
-const file = fileInput.files[0]
 const data = await file.arrayBuffer()
 
 const key = await crypto.subtle.generateKey(
 {
-name: "AES-GCM",
-length: 256
+name:"AES-GCM",
+length:256
 },
 true,
 ["encrypt","decrypt"]
@@ -26,44 +15,80 @@ const iv = crypto.getRandomValues(new Uint8Array(12))
 
 const encrypted = await crypto.subtle.encrypt(
 {
-name: "AES-GCM",
-iv: iv
+name:"AES-GCM",
+iv:iv
 },
 key,
 data
 )
 
-const encryptedBlob = new Blob([encrypted])
-
-const downloadLink = document.createElement("a")
-
-downloadLink.href = URL.createObjectURL(encryptedBlob)
-
-downloadLink.download = file.name + ".ghost"
-
-document.body.appendChild(downloadLink)
-
-downloadLink.click()
-
-document.body.removeChild(downloadLink)
-
-status.innerText = "File encrypted and downloaded."
+return encrypted
 
 }
 
-function createVault(){
+async function createVault(){
 
-const vaultId=document.getElementById("vaultId").value
+const fileInput=document.getElementById("fileInput")
+const name=document.getElementById("vaultName").value
+const days=document.getElementById("timerDays").value
+const status=document.getElementById("status")
 
-alert("Vault created: " + vaultId)
+if(!fileInput.files.length){
+
+status.innerText="Select a file"
+return
+
+}
+
+const file=fileInput.files[0]
+
+status.innerText="Encrypting..."
+
+const encrypted=await encryptFile(file)
+
+const vault={
+
+name:name,
+created:Date.now(),
+timer:days,
+lastCheckin:Date.now(),
+size:encrypted.byteLength
+
+}
+
+let vaults=JSON.parse(localStorage.getItem("ghostVaults")||"[]")
+
+vaults.push(vault)
+
+localStorage.setItem("ghostVaults",JSON.stringify(vaults))
+
+status.innerText="Vault created successfully"
+
+loadVaults()
 
 }
 
 function checkin(){
 
-const vaultId=document.getElementById("vaultId").value
+const name=document.getElementById("checkVaultName").value
 
-alert("Check-in recorded for: " + vaultId)
+let vaults=JSON.parse(localStorage.getItem("ghostVaults")||"[]")
+
+vaults=vaults.map(v=>{
+
+if(v.name===name){
+
+v.lastCheckin=Date.now()
+
+}
+
+return v
+
+})
+
+localStorage.setItem("ghostVaults",JSON.stringify(vaults))
+
+alert("Check-in recorded")
 
 }
 
@@ -73,10 +98,16 @@ const list=document.getElementById("vaultList")
 
 list.innerHTML=""
 
-const item=document.createElement("li")
+const vaults=JSON.parse(localStorage.getItem("ghostVaults")||"[]")
 
-item.innerText="Example Vault – Prototype"
+vaults.forEach(v=>{
 
-list.appendChild(item)
+const li=document.createElement("li")
+
+li.innerText=v.name+" | last check-in: "+new Date(v.lastCheckin).toLocaleString()
+
+list.appendChild(li)
+
+})
 
 }
