@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
+<meta charset="UTF-8">
 
 <title>GhostDrop Vault</title>
 
@@ -12,7 +15,7 @@
 
 <h1>GhostDrop 💀</h1>
 
-<p>Dead-man switch vault</p>
+<p>Dead-man switch vault prototype</p>
 
 <div class="card">
 
@@ -28,21 +31,21 @@
 
 </div>
 
-
 <div class="card">
 
-<h2>Daily Check-In</h2>
+<h2>Check In</h2>
 
-<input id="checkinVaultId" placeholder="Vault ID">
+<input id="checkVaultId" placeholder="Vault ID">
 
 <button onclick="checkin()">Check In</button>
 
 </div>
+
 <div class="card">
 
-<h2>Vault Status</h2>
+<h2>Vault List</h2>
 
-<button onclick="loadVaults()">Refresh Vault List</button>
+<button onclick="loadVaults()">Refresh</button>
 
 <ul id="vaultList"></ul>
 
@@ -51,4 +54,5 @@
 <script src="app.js"></script>
 
 </body>
+
 </html>
