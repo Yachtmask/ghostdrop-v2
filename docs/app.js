@@ -26,6 +26,12 @@ return encrypted
 
 }
 
+function generateCID(){
+
+return "vault_"+Math.random().toString(36).substring(2,12)
+
+}
+
 async function createVault(){
 
 const fileInput=document.getElementById("fileInput")
@@ -42,13 +48,20 @@ return
 
 const file=fileInput.files[0]
 
-status.innerText="Encrypting..."
+status.innerText="Encrypting file..."
 
 const encrypted=await encryptFile(file)
+
+status.innerText="Storing encrypted vault..."
+
+const cid=generateCID()
+
+localStorage.setItem("vault_file_"+cid,JSON.stringify(Array.from(new Uint8Array(encrypted))))
 
 const vault={
 
 name:name,
+cid:cid,
 created:Date.now(),
 timer:days,
 lastCheckin:Date.now(),
@@ -62,7 +75,7 @@ vaults.push(vault)
 
 localStorage.setItem("ghostVaults",JSON.stringify(vaults))
 
-status.innerText="Vault created successfully"
+status.innerText="Vault created. CID: "+cid
 
 loadVaults()
 
@@ -104,7 +117,7 @@ vaults.forEach(v=>{
 
 const li=document.createElement("li")
 
-li.innerText=v.name+" | last check-in: "+new Date(v.lastCheckin).toLocaleString()
+li.innerText=v.name+" | CID: "+v.cid+" | last check-in: "+new Date(v.lastCheckin).toLocaleString()
 
 list.appendChild(li)
 
