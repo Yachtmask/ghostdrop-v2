@@ -3,10 +3,7 @@ async function encryptFile(file){
 const data = await file.arrayBuffer()
 
 const key = await crypto.subtle.generateKey(
-{
-name:"AES-GCM",
-length:256
-},
+{ name:"AES-GCM", length:256 },
 true,
 ["encrypt","decrypt"]
 )
@@ -14,10 +11,7 @@ true,
 const iv = crypto.getRandomValues(new Uint8Array(12))
 
 const encrypted = await crypto.subtle.encrypt(
-{
-name:"AES-GCM",
-iv:iv
-},
+{ name:"AES-GCM", iv:iv },
 key,
 data
 )
@@ -28,7 +22,25 @@ return encrypted
 
 function generateCID(){
 
-return "vault_"+Math.random().toString(36).substring(2,12)
+return "cid_" + Math.random().toString(36).substring(2,12)
+
+}
+
+function downloadFile(data,name){
+
+const blob = new Blob([data])
+
+const link = document.createElement("a")
+
+link.href = URL.createObjectURL(blob)
+
+link.download = name + ".ghost"
+
+document.body.appendChild(link)
+
+link.click()
+
+document.body.removeChild(link)
 
 }
 
@@ -36,12 +48,13 @@ async function createVault(){
 
 const fileInput=document.getElementById("fileInput")
 const name=document.getElementById("vaultName").value
-const days=document.getElementById("timerDays").value
+const days=parseInt(document.getElementById("timerDays").value)
+const recipients=document.getElementById("recipients").value
 const status=document.getElementById("status")
 
 if(!fileInput.files.length){
 
-status.innerText="Select a file"
+status.innerText="Select file"
 return
 
 }
@@ -52,20 +65,18 @@ status.innerText="Encrypting file..."
 
 const encrypted=await encryptFile(file)
 
-status.innerText="Storing encrypted vault..."
+downloadFile(encrypted,file.name)
 
 const cid=generateCID()
-
-localStorage.setItem("vault_file_"+cid,JSON.stringify(Array.from(new Uint8Array(encrypted))))
 
 const vault={
 
 name:name,
 cid:cid,
 created:Date.now(),
-timer:days,
 lastCheckin:Date.now(),
-size:encrypted.byteLength
+timer:days,
+recipients:recipients.split(",")
 
 }
 
@@ -75,15 +86,54 @@ vaults.push(vault)
 
 localStorage.setItem("ghostVaults",JSON.stringify(vaults))
 
-status.innerText="Vault created. CID: "+cid
+status.innerText="Vault created"
 
 loadVaults()
 
 }
 
-function checkin(){
+function loadVaults(){
 
-const name=document.getElementById("checkVaultName").value
+const list=document.getElementById("vaultList")
+
+list.innerHTML=""
+
+const vaults=JSON.parse(localStorage.getItem("ghostVaults")||"[]")
+
+vaults.forEach(v=>{
+
+const now=Date.now()
+
+const elapsed=(now-v.lastCheckin)/(1000*60*60*24)
+
+let state="Active"
+
+if(elapsed>v.timer){
+
+state="RELEASED"
+
+}
+
+const li=document.createElement("li")
+
+li.innerHTML=
+
+"<div class='bg-black p-4 border border-gray-800 rounded'>"+
+"<b>"+v.name+"</b><br>"+
+"CID: "+v.cid+"<br>"+
+"Recipients: "+v.recipients.join(", ")+"<br>"+
+"Status: "+state+"<br>"+
+"Last Check-in: "+new Date(v.lastCheckin).toLocaleString()+"<br>"+
+"<button onclick='checkin(\""+v.name+"\")' class='mt-2 bg-gray-800 px-3 py-1 rounded'>Check In</button>"+
+"</div>"
+
+list.appendChild(li)
+
+})
+
+}
+
+function checkin(name){
 
 let vaults=JSON.parse(localStorage.getItem("ghostVaults")||"[]")
 
@@ -101,26 +151,6 @@ return v
 
 localStorage.setItem("ghostVaults",JSON.stringify(vaults))
 
-alert("Check-in recorded")
-
-}
-
-function loadVaults(){
-
-const list=document.getElementById("vaultList")
-
-list.innerHTML=""
-
-const vaults=JSON.parse(localStorage.getItem("ghostVaults")||"[]")
-
-vaults.forEach(v=>{
-
-const li=document.createElement("li")
-
-li.innerText=v.name+" | CID: "+v.cid+" | last check-in: "+new Date(v.lastCheckin).toLocaleString()
-
-list.appendChild(li)
-
-})
+loadVaults()
 
 }
