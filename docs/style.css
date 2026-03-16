@@ -1,1 +1,37 @@
+body {
 
+background:#0f0f0f;
+color:white;
+font-family:Arial;
+text-align:center;
+
+}
+
+.card {
+
+background:#1e1e1e;
+margin:20px auto;
+padding:20px;
+width:300px;
+border-radius:10px;
+
+}
+
+input {
+
+display:block;
+margin:10px auto;
+padding:10px;
+width:90%;
+
+}
+
+button {
+
+background:#ff0033;
+color:white;
+border:none;
+padding:10px 20px;
+cursor:pointer;
+
+}
