@@ -1,37 +1,37 @@
 body {
 
-font-family: Arial;
-background: #0a0a0a;
-color: white;
-text-align: center;
+background:#0f0f0f;
+color:white;
+font-family:Arial;
+text-align:center;
 
 }
 
 .card {
 
-background: #1a1a1a;
-padding: 20px;
-margin: 20px auto;
-width: 300px;
-border-radius: 10px;
+background:#1e1e1e;
+margin:20px auto;
+padding:20px;
+width:300px;
+border-radius:10px;
 
 }
 
 input {
 
-display: block;
-margin: 10px auto;
-padding: 10px;
-width: 80%;
+display:block;
+margin:10px auto;
+padding:10px;
+width:90%;
 
 }
 
 button {
 
-padding: 10px 20px;
-background: red;
-border: none;
-color: white;
-cursor: pointer;
+background:#ff0033;
+color:white;
+border:none;
+padding:10px 20px;
+cursor:pointer;
 
 }
