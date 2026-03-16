@@ -1,14 +1,16 @@
 async function encryptFile() {
 
 const fileInput = document.getElementById("fileInput")
+const status = document.getElementById("status")
 
 if (!fileInput.files.length) {
-alert("Please select a file")
+status.innerText = "Please select a file first."
 return
 }
 
-const file = fileInput.files[0]
+status.innerText = "Encrypting file..."
 
+const file = fileInput.files[0]
 const data = await file.arrayBuffer()
 
 const key = await crypto.subtle.generateKey(
@@ -17,7 +19,7 @@ name: "AES-GCM",
 length: 256
 },
 true,
-["encrypt", "decrypt"]
+["encrypt","decrypt"]
 )
 
 const iv = crypto.getRandomValues(new Uint8Array(12))
@@ -31,17 +33,21 @@ key,
 data
 )
 
-const blob = new Blob([encrypted])
+const encryptedBlob = new Blob([encrypted])
 
-const url = URL.createObjectURL(blob)
+const downloadLink = document.createElement("a")
 
-const a = document.createElement("a")
-a.href = url
-a.download = file.name + ".ghost"
-a.click()
+downloadLink.href = URL.createObjectURL(encryptedBlob)
 
-document.getElementById("status").innerText =
-"File encrypted locally. Key never left your browser."
+downloadLink.download = file.name + ".ghost"
+
+document.body.appendChild(downloadLink)
+
+downloadLink.click()
+
+document.body.removeChild(downloadLink)
+
+status.innerText = "File encrypted and downloaded."
 
 }
 
