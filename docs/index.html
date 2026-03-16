@@ -12,15 +12,19 @@
 <body>
 
 <h1>GhostDrop 💀</h1>
-<p>Dead-man switch vault prototype</p>
+<p>Decentralized Dead-Man Switch Vault</p>
 
 <div class="card">
 
-<h2>Encrypt File</h2>
+<h2>Create Vault</h2>
 
 <input type="file" id="fileInput">
 
-<button onclick="encryptFile()">Encrypt File</button>
+<input id="vaultName" placeholder="Vault Name">
+
+<input id="timerDays" placeholder="Days before release">
+
+<button onclick="createVault()">Create Vault</button>
 
 <p id="status"></p>
 
@@ -28,11 +32,9 @@
 
 <div class="card">
 
-<h2>Vault Actions</h2>
+<h2>Check In</h2>
 
-<input id="vaultId" placeholder="Vault ID">
-
-<button onclick="createVault()">Create Vault</button>
+<input id="checkVaultName" placeholder="Vault Name">
 
 <button onclick="checkin()">Check In</button>
 
@@ -40,7 +42,7 @@
 
 <div class="card">
 
-<h2>Vault List</h2>
+<h2>Your Vaults</h2>
 
 <button onclick="loadVaults()">Refresh</button>
 
