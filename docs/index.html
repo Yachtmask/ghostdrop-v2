@@ -4,9 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-
 <title>GhostDrop Vault</title>
-
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -14,28 +12,27 @@
 <body>
 
 <h1>GhostDrop 💀</h1>
-
 <p>Dead-man switch vault prototype</p>
 
 <div class="card">
 
-<h2>Create Vault</h2>
+<h2>Encrypt File</h2>
 
-<input id="vaultId" placeholder="Vault ID">
+<input type="file" id="fileInput">
 
-<input id="cid" placeholder="Shelby CID">
+<button onclick="encryptFile()">Encrypt File</button>
 
-<input id="recipients" placeholder="Recipients">
-
-<button onclick="createVault()">Create Vault</button>
+<p id="status"></p>
 
 </div>
 
 <div class="card">
 
-<h2>Check In</h2>
+<h2>Vault Actions</h2>
 
-<input id="checkVaultId" placeholder="Vault ID">
+<input id="vaultId" placeholder="Vault ID">
+
+<button onclick="createVault()">Create Vault</button>
 
 <button onclick="checkin()">Check In</button>
 
